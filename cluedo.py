@@ -3,6 +3,9 @@
 import re
 import sys
 
+def histfile(mode):
+    return file('cluedo.hist', mode)
+
 re_comma_space = re.compile(', *')
 
 WEAPONS = [
@@ -42,6 +45,22 @@ players = [] # Array<Player>
 rumours = [] # Array<Rumour>
 discovered_items = set() # Set<item>
 pool_item = None
+try:
+    history = map(lambda l: l[:-1], histfile('r').readlines())
+except IOError:
+    history = []
+
+def raw_input_or_hist():
+    global history
+    if len(history):
+        ret = history[0]
+        history = history[1:]
+        print '<canned: {}>'.format(ret)
+        return ret
+
+    line = raw_input()
+    histfile('a').write('{}\n'.format(line))
+    return line
 
 class Rumour():
     def __init__(self, weapon, suspect, room, asker):
@@ -81,7 +100,7 @@ class Player():
 
 def prompt(s):
     sys.stdout.write('{} '.format(s))
-    return raw_input()
+    return raw_input_or_hist()
 
 def yes_or_no(s):
     while True:
@@ -144,7 +163,7 @@ def init_players():
     global players
     print "input players (you first, in order), empty line to finish:"
     while True:
-        name = raw_input()
+        name = raw_input_or_hist()
         if len(name) == 0:
             break
         if name in map(lambda p: p.name, players):
