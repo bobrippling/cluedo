@@ -199,6 +199,9 @@ def ALL_ITEMS_OFFICIAL():
 
     return items
 
+def narrowed_down_items():
+    return ALL_ITEMS_OFFICIAL().difference(discovered_items)
+
 def record_player_hasnt_item(player, item, recheck_rumours = True):
     assert item not in player.verified_items
 
@@ -305,7 +308,7 @@ def discount_discovered_item_owned_by(item, owner):
 
     discovered_items.add(item)
 
-    possibles = ALL_ITEMS_OFFICIAL().difference(discovered_items)
+    possibles = narrowed_down_items()
     if len(possibles) == 3:
         print "COMPLETE: {}".format(', '.join(possibles))
 
