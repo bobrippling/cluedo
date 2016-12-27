@@ -172,8 +172,8 @@ def ALL_ITEMS_FLAT():
     items.update(set(ROOMS))
     return items
 
-def prompt_for_item(s):
-    return prompt_for(s, ALL_ITEMS_FLAT())
+def prompt_for_item(s, allow_empty = False):
+    return prompt_for(s, ALL_ITEMS_FLAT(), allow_empty)
 
 def init_players():
     global players
@@ -380,9 +380,12 @@ while True:
 
     if current_player is players[0]:
         if pool_item is None:
-            pool_item = prompt_for_item("what's the pool item (empty for undiscovered)?")
+            pool_item = prompt_for_item(
+                    "what's the pool item (empty for undiscovered)?",
+                    True)
             if pool_item is not None:
                 # act as if we own it:
+                players[0].unowned_items.discard(pool_item)
                 record_player_has_item(players[0], pool_item)
         # TODO: ideal rumour to ask
 
