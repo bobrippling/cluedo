@@ -321,11 +321,35 @@ def discount_discovered_item_owned_by(item, owner):
                 owned_item = rumour.items().pop()
                 record_player_has_item(rumour.answerer, owned_item)
 
+def check_if_no_one_owns_items():
+    ret = False
+    if pool_item is None:
+        return ret
+
+    items_to_unowners = dict() # Dict<item, Set<Player>>
+    for player in players:
+        for item in player.unowned_items:
+            items_to_unowners.get(item, []).append(player)
+
+    for item in items_to_unowners:
+        if len(items_to_unowners[item]) == len(players):
+            # no one owns 'item' - not in the pool because
+            # pool_item is not None / we own the pool item
+            print "no one owns {}".format(item)
+            # we know 'item' is a murder item, so we can discount
+            # all other items in its category:
+
+            for player in players:
+                record_player_hasnt_item(player, item, False)
+                ret = True
+
+    return ret
+
 def rumours_recheck():
     # - remove from [a, b, c] those items we know the answerer doesn't have
     #   (assert len([a,b,c]) > 0)
     # - if len([a, b, c]) == 1 then we know that player has the item
-    # - TODO: for each item, if no one has the item (and it's been found in the pool),
+    # - for each item, if no one has the item (and it's not in the pool),
     #   then it's a murder item
 
     recheck = False
@@ -337,6 +361,8 @@ def rumours_recheck():
         if len(rumour.items()) == 1:
             record_player_has_item(rumour.answerer, rumour.items().pop(), False)
             recheck = True
+
+    recheck |= check_if_no_one_owns_items()
 
     if recheck:
         rumours_recheck()
