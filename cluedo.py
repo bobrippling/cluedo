@@ -57,10 +57,8 @@ def print_status():
 
     for player in players:
         print "{}:".format(player.name)
-        for item in player.verified_items:
-            print "    owns {}".format(item)
-        for item in player.unowned_items:
-            print "    can't own {}".format(item)
+        print "    owns {}".format(', '.join(player.verified_items))
+        print "    can't own {}".format(', '.join(player.unowned_items))
 
 def raw_input_or_hist():
     global history
