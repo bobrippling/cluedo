@@ -201,7 +201,7 @@ def record_player_has_item(player, item, recheck_rumours = True):
             record_player_hasnt_item(other, item, recheck_rumours)
 
     # item can't be in the true rumour
-    discount_discovered_items(set([item]))
+    discount_discovered_item_owned_by(item, player)
 
 def subarray_find(key, toplvl):
     for ar in toplvl:
@@ -274,7 +274,7 @@ def prompt_for_rumour(s, asker):
 
         return Rumour(weapon, suspect, room, asker)
 
-def discount_discovered_items(item_set):
+def discount_discovered_item_owned_by(item, owner):
     # - update discovered_items list
     # - check discovered_items against count of all items - if exactly 3 less, done
     # - go through rumours discounting the item from each one
@@ -282,8 +282,10 @@ def discount_discovered_items(item_set):
     #   - add item to rumour.answerer's verified_items,
     #     which means no one else has it
     #   - recurse with that item to discount
-    print "discounting {} item(s): {}".format(len(item_set), ', '.join(item_set))
-    discovered_items.update(item_set)
+    if item not in owner.verified_items:
+        print "discounting {}, owned by {}".format(item, owner.name)
+
+    discovered_items.add(item)
 
     possibles = ALL_ITEMS_OFFICIAL().difference(discovered_items)
     if len(possibles) == 3:
@@ -293,10 +295,12 @@ def discount_discovered_items(item_set):
         if len(rumour.items()) == 1:
             continue # nothing important to find
 
-        rumour.discount(item_set)
-        if len(rumour.items()) == 1 and rumour.answerer is not None:
-            owned_item = rumour.items().pop()
-            record_player_has_item(rumour.answerer, owned_item)
+        if rumour.answerer != owner:
+            # the answerer can't possibly have the item, so:
+            rumour.discount(set([item]))
+            if len(rumour.items()) == 1 and rumour.answerer is not None:
+                owned_item = rumour.items().pop()
+                record_player_has_item(rumour.answerer, owned_item)
 
 def rumours_recheck():
     # - remove from [a, b, c] those items we know the answerer doesn't have
