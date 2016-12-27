@@ -309,7 +309,7 @@ def rumours_recheck():
 
     for rumour in filter(lambda r: r.answerer is not None and len(r.items()) > 1, rumours):
         rumour.discount(rumour.answerer.unowned_items)
-        assert len(rumour.items) > 0
+        assert len(rumour.items()) > 0
 
         if len(rumour.items()) == 1:
             record_player_has_item(rumour.answerer, rumour.items().pop(), False)
