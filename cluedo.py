@@ -325,15 +325,16 @@ def completed_rumour(rumour):
     # - recheck rumours against new non-presents
 
     if rumour.answerer is not None:
-        begin = players.index(rumour.asker)
-        end = players.index(rumour.answerer)
-        if abs((end % n) - (begin % n)) > 1:
-            # someone was skipped over - they don't have rumour.items()
-            i = begin + 1
-            while i % n != (end - 1) % n:
-                for item in rumour.original_items():
-                    record_player_hasnt_item(players[i % n], item, False)
-                i += 1
+        i = players.index(rumour.asker) + 1
+        n = len(players)
+
+        while players[i % n] != rumour.answerer:
+            for item in rumour.original_items():
+                print "player {} can't have {}".format(
+                        players[i%n].name, item)
+
+                record_player_hasnt_item(players[i % n], item, False)
+            i += 1
     else:
         for player in filter(lambda p: p is not rumour.asker, players):
             for item in rumour.original_items():
