@@ -50,6 +50,18 @@ try:
 except IOError:
     history = []
 
+def print_status():
+    print "narrowed down to these items:"
+    for item in narrowed_down_items():
+        print "    {}".format(item)
+
+    for player in players:
+        print "{}:".format(player.name)
+        for item in player.verified_items:
+            print "    owns {}".format(item)
+        for item in player.unowned_items:
+            print "    can't own {}".format(item)
+
 def raw_input_or_hist():
     global history
     if len(history):
@@ -58,7 +70,13 @@ def raw_input_or_hist():
         print '<canned: {}>'.format(ret)
         return ret
 
-    line = raw_input()
+    while True:
+        line = raw_input()
+        if line == '/status':
+            print_status()
+        else:
+            break
+
     histfile('a').write('{}\n'.format(line))
     return line
 
