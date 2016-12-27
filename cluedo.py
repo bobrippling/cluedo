@@ -381,9 +381,12 @@ while True:
     turn = (turn + 1) % len(players)
 
     if current_player is players[0]:
+        if pool_item is None:
+            pool_item = prompt_for_item("what's the pool item (empty for undiscovered)?")
+            if pool_item is not None:
+                # act as if we own it:
+                record_player_has_item(players[0], pool_item)
         # TODO: ideal rumour to ask
-        # TODO(pool): handle special case pool-item
-        pass
 
     rumour = prompt_for_rumour("rumour (a, b, c)?", current_player)
 
