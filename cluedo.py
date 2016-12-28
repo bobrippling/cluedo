@@ -319,7 +319,7 @@ def discount_discovered_item_owned_by(item, owner):
     #   - add item to rumour.answerer's verified_items,
     #     which means no one else has it
     #   - recurse with that item to discount
-    if item not in owner.verified_items:
+    if item not in discovered_items:
         print "discounting {}, owned by {}".format(item, owner.name)
 
     discovered_items.add(item)
