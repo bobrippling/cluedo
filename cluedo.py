@@ -210,7 +210,11 @@ def ALL_ITEMS_FLAT():
     return items
 
 def prompt_for_item(s, allow_empty = False):
-    return prompt_for(s, ALL_ITEMS_FLAT(), allow_empty)
+    item = prompt_for(s, ALL_ITEMS_FLAT(), allow_empty)
+    if item is None:
+        assert allow_empty
+        return None
+    return item_or_none(item) # canonicalise item
 
 def init_players():
     global players
