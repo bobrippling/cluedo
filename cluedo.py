@@ -133,6 +133,11 @@ def yes_or_no(s):
             return False
         print "please enter y/n"
 
+def substring_matches_in_array(substr, array):
+    return filter(
+            lambda p: p[:len(substr)] == substr,
+            array)
+
 def prompt_for(s, candidates, allow_empty = False):
     candidate = ''
     while True:
@@ -141,9 +146,7 @@ def prompt_for(s, candidates, allow_empty = False):
         if allow_empty and len(candidate) == 0:
             return None
 
-        matches = filter(
-                lambda p: p[:len(candidate)] == candidate,
-                candidates)
+        matches = substring_matches_in_array(candidate, candidates)
 
         if len(matches) == 1:
             return matches[0]
