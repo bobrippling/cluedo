@@ -4,8 +4,19 @@ import re
 import sys
 from collections import defaultdict
 
+def usage():
+    print >>sys.stderr, "Usage: {} [histfile]".format(sys.argv[0])
+    sys.exit(2)
+
+histfilepath = 'cluedo.hist'
+
+if len(sys.argv) == 2:
+    histfilepath = sys.argv[1]
+elif len(sys.argv) != 1:
+    usage()
+
 def histfile(mode):
-    return file('cluedo.hist', mode)
+    return file(histfilepath, mode)
 
 re_comma_space = re.compile(', *')
 re_give = re.compile('/give ([^ ]+) (.*)$')
