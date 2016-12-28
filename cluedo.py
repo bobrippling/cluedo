@@ -222,6 +222,9 @@ def init_players():
         if name in map(lambda p: p.name, players):
             print "already have {}".format(name)
             raise Exception()
+        if ',' in name:
+            print "comma in {}".format(name)
+            raise Exception()
         players.append(Player(name))
 
 def ALL_ITEMS_OFFICIAL():
