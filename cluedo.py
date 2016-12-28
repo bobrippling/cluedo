@@ -410,6 +410,9 @@ def completed_rumour(rumour):
 
     rumours_recheck()
 
+def print_ideal_rumour():
+    pass
+
 init_players()
 init_from_my_cards()
 
@@ -432,7 +435,7 @@ while True:
                 # act as if we own it:
                 players[0].unowned_items.discard(pool_item)
                 record_player_has_item(players[0], pool_item)
-        # TODO: ideal rumour to ask
+        print_ideal_rumour()
 
     rumour = prompt_for_rumour(
             "rumour (a, b, c) (empty for no rumour)?",
