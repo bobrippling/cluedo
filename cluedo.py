@@ -56,7 +56,8 @@ ROOMS = [
 
 players = [] # Array<Player>
 rumours = [] # Array<Rumour>
-discovered_items = set() # Set<item>
+discovered_items = set() # Set<item> (may contain items found through deduction)
+murder_items = set() # Set<item>
 pool_item = None
 try:
     history = map(lambda l: l[:-1], histfile('r').readlines())
@@ -68,6 +69,9 @@ def print_status():
     grouped_items = group_items(narrowed_down_items())
     for key in grouped_items:
         print "    {}: {}".format(key, ', '.join(grouped_items[key]))
+
+    print "known murder items (no one owns these):"
+    print "    {}".format(', '.join(murder_items))
 
     for player in players:
         print "{}:".format(player.name)
@@ -405,17 +409,25 @@ def check_if_no_one_owns_items():
             items_to_unowners[item].append(player)
 
     for item in items_to_unowners:
+        if item is pool_item:
+            continue
+
+        if item in murder_items:
+            continue # already done this one
+
         if len(items_to_unowners[item]) == len(players):
-            # no one owns 'item' - not in the pool because
-            # pool_item is not None / we own the pool item
-            print "no one owns {}".format(item)
-            # we know 'item' is a murder item, so we can discount
-            # all other items in its category:
+            # no one owns 'item' - it's either a murder item or pool item
+            # can't be a pool item because of the above if-statement
+            print "no one owns {} - murder item".format(item)
 
             for player in players:
-                if item not in player.unowned_items:
-                    record_player_hasnt_item(player, item, False)
-                    ret = True
+                assert item in player.unowned_items
+
+            if item not in murder_items:
+                murder_items.add(item)
+                if len(murder_items) == 3:
+                    complete(murder_items)
+
 
     return ret
 
