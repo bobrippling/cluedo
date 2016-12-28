@@ -8,6 +8,7 @@ def histfile(mode):
     return file('cluedo.hist', mode)
 
 re_comma_space = re.compile(', *')
+re_give = re.compile('/give ([^ ]+) (.*)$')
 
 WEAPONS = [
         ["knife"],
@@ -72,8 +73,26 @@ def raw_input_or_hist(pre = ''):
 
     while True:
         line = raw_input()
+        give_match = re_give.match(line)
         if line == '/status':
             print_status()
+            sys.stdout.write(pre)
+        elif give_match:
+            item = give_match.group(1)
+            name = give_match.group(2)
+
+            founds = filter(lambda p: p.name == name, players)
+            if len(founds) != 1:
+                print "invalid player {}".format(name)
+                continue
+            player = founds[0]
+
+            item = item_or_none(item)
+            if item is None:
+                print "invalid item"
+                continue
+
+            record_player_has_item(player, item)
             sys.stdout.write(pre)
         else:
             break
