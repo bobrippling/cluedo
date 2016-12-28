@@ -321,7 +321,9 @@ def prompt_for_rumour(s, asker, allow_empty = True):
         if room is None: need.append("room")
 
         if len(need) > 0:
-            print "need {}".format(', '.join(need))
+            print "need {} - got {}".format(
+                    ', '.join(need),
+                    ', '.join(filter(lambda p: p is not None, rumour_entries)))
             continue
 
         return Rumour(weapon, suspect, room, asker)
