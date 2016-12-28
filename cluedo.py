@@ -231,10 +231,10 @@ def init_players():
             raise Exception()
         players.append(Player(name))
 
-def ALL_ITEMS_OFFICIAL():
-    def first_alias(aliases):
-        return aliases[0]
+def first_alias(aliases):
+    return aliases[0]
 
+def ALL_ITEMS_OFFICIAL():
     items = set(map(first_alias, WEAPONS))
     items.update(map(first_alias, SUSPECTS))
     items.update(ROOMS)
