@@ -343,8 +343,9 @@ def check_if_no_one_owns_items():
             # all other items in its category:
 
             for player in players:
-                record_player_hasnt_item(player, item, False)
-                ret = True
+                if item not in player.unowned_items:
+                    record_player_hasnt_item(player, item, False)
+                    ret = True
 
     return ret
 
