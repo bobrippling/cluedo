@@ -359,6 +359,10 @@ def prompt_for_rumour(s, asker, allow_empty = True):
 
         return Rumour(weapon, suspect, room, asker)
 
+def complete(items):
+    print "COMPLETE: {}".format(', '.join(items))
+    print_status()
+
 def discount_discovered_item_owned_by(item, owner):
     # - update discovered_items list
     # - check discovered_items against count of all items - if exactly 3 less, done
@@ -374,7 +378,7 @@ def discount_discovered_item_owned_by(item, owner):
 
     possibles = narrowed_down_items()
     if len(possibles) == 3:
-        print "COMPLETE: {}".format(', '.join(possibles))
+        complete(possibles)
 
     for rumour in rumours:
         if len(rumour.items()) == 1:
