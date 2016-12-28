@@ -62,7 +62,7 @@ def print_status():
         print "    owns {}".format(', '.join(player.verified_items))
         print "    can't own {}".format(', '.join(player.unowned_items))
 
-def raw_input_or_hist():
+def raw_input_or_hist(pre = ''):
     global history
     if len(history):
         ret = history[0]
@@ -74,6 +74,7 @@ def raw_input_or_hist():
         line = raw_input()
         if line == '/status':
             print_status()
+            sys.stdout.write(pre)
         else:
             break
 
@@ -117,8 +118,9 @@ class Player():
         self.unowned_items = set()
 
 def prompt(s):
-    sys.stdout.write('{} '.format(s))
-    return raw_input_or_hist()
+    pre = '{} '.format(s)
+    sys.stdout.write(pre)
+    return raw_input_or_hist(pre)
 
 def yes_or_no(s):
     while True:
