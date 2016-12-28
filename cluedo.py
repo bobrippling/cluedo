@@ -244,7 +244,7 @@ def subarray_find(key, toplvl):
                 return ar[0]
     return None
 
-def item_resolve(item):
+def item_or_none(item):
     resolved = subarray_find(item, WEAPONS)
     if resolved is not None: return resolved
     resolved = subarray_find(item, SUSPECTS)
@@ -259,7 +259,7 @@ def init_from_my_cards():
                 re_comma_space,
                 prompt('your items?'))
 
-        items = map(item_resolve, raw_items)
+        items = map(item_or_none, raw_items)
 
         if None in items:
             missing = []
