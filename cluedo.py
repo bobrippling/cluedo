@@ -253,6 +253,20 @@ def item_or_none(item):
         return item
     return None
 
+def item_lookup(item):
+    for ar in WEAPONS:
+        matches = substring_matches_in_array(item, ar)
+        if len(matches) == 1:
+            return matches[0]
+    for ar in SUSPECTS:
+        matches = substring_matches_in_array(item, ar)
+        if len(matches) == 1:
+            return matches[0]
+    matches = substring_matches_in_array(item, ROOMS)
+    if len(matches) == 1:
+        return matches[0]
+    return None
+
 def init_from_my_cards():
     while True:
         raw_items = re.split(
@@ -288,10 +302,11 @@ def prompt_for_rumour(s, asker, allow_empty = True):
         if allow_empty and len(rumour) == 0:
             return None
 
-        rumour_entries = re.split(re_comma_space, rumour)
-        if len(rumour_entries) != 3:
-            print "got {} entries, need 3".format(len(rumour_entries))
+        rumour_entries_raw = re.split(re_comma_space, rumour)
+        if len(rumour_entries_raw) != 3:
+            print "got {} entries, need 3".format(len(rumour_entries_raw))
             continue
+        rumour_entries = map(item_lookup, rumour_entries_raw)
 
         weapon, suspect, room = None, None, None
 
