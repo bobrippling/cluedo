@@ -385,10 +385,12 @@ def discount_discovered_item_owned_by(item, owner):
                 item,
                 owner.name if owner else '<no one - deduced>')
 
+    already_have_3 = len(narrowed_down_items()) == 3
+
     discovered_items.add(item)
 
     possibles = narrowed_down_items()
-    if len(possibles) == 3:
+    if len(possibles) == 3 and not already_have_3:
         complete(possibles)
 
     if owner is None:
