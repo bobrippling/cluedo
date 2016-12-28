@@ -253,7 +253,10 @@ def group_items(items):
     return groups
 
 def record_player_hasnt_item(player, item, recheck_rumours = True):
-    assert item not in player.verified_items
+    owner_assertion = item not in player.verified_items or player is players[0] and item is pool_item
+    if not owner_assertion:
+        print "!!! player {} is lying - they already own {}".format(player.name, item)
+        return
 
     player.unowned_items.add(item)
 
