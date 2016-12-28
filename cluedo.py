@@ -254,17 +254,11 @@ def item_or_none(item):
     return None
 
 def item_lookup(item):
-    for ar in WEAPONS:
-        matches = substring_matches_in_array(item, ar)
-        if len(matches) == 1:
-            return matches[0]
-    for ar in SUSPECTS:
-        matches = substring_matches_in_array(item, ar)
-        if len(matches) == 1:
-            return matches[0]
-    matches = substring_matches_in_array(item, ROOMS)
+    matches = substring_matches_in_array(item, ALL_ITEMS_FLAT())
+
     if len(matches) == 1:
-        return matches[0]
+        return item_or_none(matches[0])
+    print "too many matches for '{}': {}".format(item, ', '.join(matches))
     return None
 
 def init_from_my_cards():
