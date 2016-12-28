@@ -433,7 +433,7 @@ while True:
             "rumour (a, b, c) (empty for no rumour)?",
             current_player)
 
-    if rumours is None:
+    if rumour is None:
         continue
 
     answerer = prompt_for_player('who answered (nothing = no one)?', True)
