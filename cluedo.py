@@ -53,8 +53,9 @@ except IOError:
 
 def print_status():
     print "narrowed down to these items:"
-    for item in narrowed_down_items():
-        print "    {}".format(item)
+    grouped_items = group_items(narrowed_down_items())
+    for key in grouped_items:
+        print "    {}: {}".format(key, ', '.join(grouped_items[key]))
 
     for player in players:
         print "{}:".format(player.name)
@@ -200,6 +201,14 @@ def ALL_ITEMS_OFFICIAL():
 
 def narrowed_down_items():
     return ALL_ITEMS_OFFICIAL().difference(discovered_items)
+
+def group_items(items):
+    groups = defaultdict(list)
+    for item in items:
+        if subarray_find(item, WEAPONS): groups["weapons"].append(item)
+        elif subarray_find(item, SUSPECTS): groups["suspects"].append(item)
+        if item in ROOMS: groups["rooms"].append(item)
+    return groups
 
 def record_player_hasnt_item(player, item, recheck_rumours = True):
     assert item not in player.verified_items
