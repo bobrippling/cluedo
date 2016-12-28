@@ -371,6 +371,8 @@ def complete(items):
     print_status()
 
 def discount_discovered_item_owned_by(item, owner):
+    # ^ owner may be None
+    #
     # - update discovered_items list
     # - check discovered_items against count of all items - if exactly 3 less, done
     # - go through rumours discounting the item from each one
@@ -379,13 +381,23 @@ def discount_discovered_item_owned_by(item, owner):
     #     which means no one else has it
     #   - recurse with that item to discount
     if item not in discovered_items:
-        print "discounting {}, owned by {}".format(item, owner.name)
+        print "discounting {}, owned by {}".format(
+                item,
+                owner.name if owner else '<no one - deduced>')
 
     discovered_items.add(item)
 
     possibles = narrowed_down_items()
     if len(possibles) == 3:
         complete(possibles)
+
+    if owner is None:
+        # - we've deduced an item isn't owned by anyone
+        # - if we don't know the pool_item then we can't prove anything
+        # - once we know the pool item we can use this list of unowned items
+        #   to prove further
+        # FIXME: delay this until later
+        return
 
     for rumour in rumours:
         if len(rumour.items()) == 1:
@@ -427,6 +439,19 @@ def check_if_no_one_owns_items():
                 murder_items.add(item)
                 if len(murder_items) == 3:
                     complete(murder_items)
+
+            # discount all other items in category - must be the murder item
+            if subarray_find(item, WEAPONS):
+                for weapon in filter(lambda w: w != item, map(first_alias, WEAPONS)):
+                    discount_discovered_item_owned_by(weapon, None)
+            elif subarray_find(item, SUSPECTS):
+                for suspect in filter(lambda s: s != item, map(first_alias, SUSPECTS)):
+                    discount_discovered_item_owned_by(suspect, None)
+            elif item in ROOMS:
+                for room in filter(lambda r: r != item, ROOMS):
+                    discount_discovered_item_owned_by(room, None)
+            else:
+                unreachable()
 
 
     return ret
