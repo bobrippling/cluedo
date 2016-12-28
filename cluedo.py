@@ -2,6 +2,7 @@
 
 import re
 import sys
+from collections import defaultdict
 
 def histfile(mode):
     return file('cluedo.hist', mode)
@@ -329,10 +330,10 @@ def check_if_no_one_owns_items():
     if pool_item is None:
         return ret
 
-    items_to_unowners = dict() # Dict<item, Set<Player>>
+    items_to_unowners = defaultdict(list) # Dict<item, Set<Player>>
     for player in players:
         for item in player.unowned_items:
-            items_to_unowners.get(item, []).append(player)
+            items_to_unowners[item].append(player)
 
     for item in items_to_unowners:
         if len(items_to_unowners[item]) == len(players):
