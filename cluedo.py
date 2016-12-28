@@ -64,7 +64,7 @@ except IOError:
     history = []
 
 def print_status():
-    print "narrowed down to these items:"
+    print "narrowed down to these items (all items minus discovered items):"
     grouped_items = group_items(narrowed_down_items())
     for key in grouped_items:
         print "    {}: {}".format(key, ', '.join(grouped_items[key]))
