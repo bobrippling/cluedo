@@ -453,8 +453,9 @@ def completed_rumour(rumour):
 
         while players[i % n] != rumour.answerer:
             for item in rumour.original_items():
-                print "player {} can't have {}".format(
-                        players[i%n].name, item)
+                if item not in players[i % n].unowned_items:
+                    print "player {} can't have {}".format(
+                            players[i%n].name, item)
 
                 record_player_hasnt_item(players[i % n], item, False)
             i += 1
