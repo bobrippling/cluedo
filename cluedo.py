@@ -19,7 +19,7 @@ def histfile(mode):
     return file(histfilepath, mode)
 
 re_comma_space = re.compile(', *')
-re_give = re.compile('/give ([^ ]+) (.*)$')
+re_give = re.compile('/give ([^,]+), *(.*)$')
 
 WEAPONS = [
         ["knife"],
