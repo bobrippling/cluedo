@@ -267,9 +267,12 @@ def init_from_my_cards():
                 record_player_has_item(players[0], item)
             break
 
-def prompt_for_rumour(s, asker):
+def prompt_for_rumour(s, asker, allow_empty = True):
     while True:
         rumour = prompt(s)
+        if allow_empty and len(rumour) == 0:
+            return None
+
         rumour_entries = re.split(re_comma_space, rumour)
         if len(rumour_entries) != 3:
             print "got {} entries, need 3".format(len(rumour_entries))
@@ -415,7 +418,12 @@ while True:
                 record_player_has_item(players[0], pool_item)
         # TODO: ideal rumour to ask
 
-    rumour = prompt_for_rumour("rumour (a, b, c)?", current_player)
+    rumour = prompt_for_rumour(
+            "rumour (a, b, c) (empty for no rumour)?",
+            current_player)
+
+    if rumours is None:
+        continue
 
     answerer = prompt_for_player('who answered (nothing = no one)?', True)
 
