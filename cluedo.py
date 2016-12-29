@@ -75,8 +75,12 @@ def print_status():
 
     for player in players:
         print "{}:".format(player.name)
-        print "    owns {}".format(', '.join(player.verified_items))
-        print "    can't own {}".format(', '.join(player.unowned_items))
+        print "    owns weapons: {}".format(      ', '.join(player.verified_items.intersection(map(first_alias, WEAPONS))))
+        print "    owns suspects: {}".format(     ', '.join(player.verified_items.intersection(map(first_alias, SUSPECTS))))
+        print "    owns rooms: {}".format(        ', '.join(player.verified_items.intersection(ROOMS)))
+        print "    can't own weapons: {}".format( ', '.join(player.unowned_items.intersection(map(first_alias, WEAPONS))))
+        print "    can't own suspects: {}".format(', '.join(player.unowned_items.intersection(map(first_alias, SUSPECTS))))
+        print "    can't own rooms: {}".format(   ', '.join(player.unowned_items.intersection(ROOMS)))
 
 def raw_input_or_hist(pre = ''):
     global history
