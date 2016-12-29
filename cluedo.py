@@ -533,6 +533,7 @@ turn = players.index(player)
 assert turn >= 0
 
 while True:
+    # FIXME: people can have multiple turns
     current_player = players[turn]
     turn = (turn + 1) % len(players)
 
@@ -556,6 +557,7 @@ while True:
 
     stop_player = expected_rumour_stop_player(rumour, turn - 1)
 
+    # FIXME: intrigue prevents rumour being answered - can say people don't have something but can't add a rumour
     answerer = prompt_for_player(
             'who answered{} (nothing = no one)?'.format(
                 " - should stop at {}".format(stop_player.name) if stop_player else ''),
