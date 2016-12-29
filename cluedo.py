@@ -509,6 +509,19 @@ def completed_rumour(rumour):
 
     rumours_recheck()
 
+def expected_rumour_stop_player(rumour, turn):
+    n = len(players)
+    i = turn + 1
+    while i != turn:
+        next_p = players[i % n]
+
+        for item in rumour.items():
+            if item in next_p.verified_items:
+                return next_p
+        i = (i + 1) % n
+
+    return None
+
 def print_ideal_rumour():
     pass
 
@@ -543,7 +556,12 @@ while True:
     if rumour is None:
         continue
 
-    answerer = prompt_for_player('who answered (nothing = no one)?', True)
+    stop_player = expected_rumour_stop_player(rumour, turn - 1)
+
+    answerer = prompt_for_player(
+            'who answered{} (nothing = no one)?'.format(
+                " - should stop at {}".format(stop_player.name) if stop_player else ''),
+            True)
 
     rumour.answerer = answerer
     assert rumour.answerer is not rumour.asker
