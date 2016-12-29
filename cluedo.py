@@ -533,8 +533,6 @@ turn = players.index(player)
 assert turn >= 0
 
 while True:
-    correct_turn = yes_or_no("is it {}'s turn (Y/n)?".format(players[turn].name))
-    assert correct_turn
     current_player = players[turn]
     turn = (turn + 1) % len(players)
 
@@ -550,7 +548,7 @@ while True:
         print_ideal_rumour()
 
     rumour = prompt_for_rumour(
-            "rumour (a, b, c) (empty for no rumour)?",
+            "{}'s rumour (a, b, c) (empty for no rumour)?".format(current_player.name),
             current_player)
 
     if rumour is None:
