@@ -58,7 +58,7 @@ players = [] # Array<Player>
 rumours = [] # Array<Rumour>
 discovered_items = set() # Set<item> (may contain items found through deduction)
 murder_items = set() # Set<item>
-pool_item = None
+#pool_item = None
 try:
     history = map(lambda l: l[:-1], histfile('r').readlines())
 except IOError:
@@ -261,7 +261,7 @@ def group_items(items):
     return groups
 
 def record_player_hasnt_item(player, item, recheck_rumours = True):
-    owner_assertion = item not in player.verified_items or player is players[0] and item is pool_item
+    owner_assertion = item not in player.verified_items #or player is players[0] and item is pool_item
     if not owner_assertion:
         print "!!! player {} is lying - they already own {}".format(player.name, item)
         return
@@ -420,8 +420,8 @@ def discount_discovered_item_owned_by(item, owner):
 
 def check_if_no_one_owns_items():
     ret = False
-    if pool_item is None:
-        return ret
+    #if pool_item is None:
+    #    return ret
 
     items_to_unowners = defaultdict(list) # Dict<item, Set<Player>>
     for player in players:
@@ -429,8 +429,8 @@ def check_if_no_one_owns_items():
             items_to_unowners[item].append(player)
 
     for item in items_to_unowners:
-        if item is pool_item:
-            continue
+        #if item is pool_item:
+        #    continue
 
         if item in murder_items:
             continue # already done this one
@@ -541,14 +541,14 @@ while True:
     turn = (turn + 1) % len(players)
 
     if current_player is players[0]:
-        if pool_item is None:
-            pool_item = prompt_for_item(
-                    "what's the pool item (empty for undiscovered)?",
-                    True)
-            if pool_item is not None:
-                # act as if we own it:
-                players[0].unowned_items.discard(pool_item)
-                record_player_has_item(players[0], pool_item)
+        #if pool_item is None:
+        #    pool_item = prompt_for_item(
+        #            "what's the pool item (empty for undiscovered)?",
+        #            True)
+        #    if pool_item is not None:
+        #        # act as if we own it:
+        #        players[0].unowned_items.discard(pool_item)
+        #        record_player_has_item(players[0], pool_item)
         print_ideal_rumour()
 
     rumour = prompt_for_rumour(
