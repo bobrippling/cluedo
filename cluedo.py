@@ -562,7 +562,7 @@ while True:
 
     # FIXME: intrigue prevents rumour being answered - can say people don't have something but can't add a rumour
     answerer = prompt_for_player(
-            'who answered{} (nothing = no one)?'.format(
+            'who answered{} (nothing = no one, STOP <name> = stopped)?'.format(
                 " - should stop at {}".format(stop_player.name) if stop_player else ''),
             True)
 
