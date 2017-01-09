@@ -371,8 +371,9 @@ def prompt_for_rumour(s, asker, allow_empty = True):
         return Rumour(weapon, suspect, room, asker)
 
 def complete(items):
-    print "COMPLETE: {}".format(', '.join(items))
-    print_status()
+    print "I KNOW WHO IT IS"
+    #print "COMPLETE: {}".format(', '.join(items))
+    #print_status()
 
 def discount_discovered_item_owned_by(item, owner):
     # ^ owner may be None
@@ -385,9 +386,10 @@ def discount_discovered_item_owned_by(item, owner):
     #     which means no one else has it
     #   - recurse with that item to discount
     if item not in discovered_items:
-        print "discounting {}, owned by {}".format(
-                item,
-                owner.name if owner else '<no one - deduced>')
+        pass
+        #print "discounting {}, owned by {}".format(
+        #        item,
+        #        owner.name if owner else '<no one - deduced>')
 
     already_have_3 = len(narrowed_down_items()) == 3
 
@@ -436,7 +438,7 @@ def check_if_no_one_owns_items():
         if len(items_to_unowners[item]) == len(players):
             # no one owns 'item' - it's either a murder item or pool item
             # can't be a pool item because of the above if-statement
-            print "no one owns {} - murder item".format(item)
+            #print "no one owns {} - murder item".format(item)
 
             for player in players:
                 assert item in player.unowned_items
@@ -497,8 +499,9 @@ def completed_rumour(rumour):
         while players[i % n] != rumour.answerer:
             for item in rumour.original_items():
                 if item not in players[i % n].unowned_items:
-                    print "player {} can't have {}".format(
-                            players[i%n].name, item)
+                    pass
+                    #print "player {} can't have {}".format(
+                    #        players[i%n].name, item)
 
                 record_player_hasnt_item(players[i % n], item, False)
             i += 1
